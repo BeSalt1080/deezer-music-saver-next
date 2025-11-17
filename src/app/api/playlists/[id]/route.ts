@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = Number(params.id);
+    const id = Number((await params).id);
     const playlist = await prisma.playlist.findUnique({
       where: { id },
       include: { playlistMusics: { include: { music: true } } },
@@ -23,7 +23,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = Number(params.id);
+    const id = Number((await params).id);
     const body = await request.json();
     const { name, description, musicIds } = body;
 
@@ -53,7 +53,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = Number(params.id);
+    const id = Number((await params).id);
     await prisma.playlistMusic.deleteMany({ where: { playlistId: id } });
     await prisma.playlist.delete({ where: { id } });
     return NextResponse.json({ ok: true });

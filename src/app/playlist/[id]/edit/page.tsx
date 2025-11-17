@@ -2,7 +2,7 @@ import EditPlaylistForm from "./EditPlaylistForm";
 import { prisma } from "@/lib/prisma";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const id = Number(params.id);
+  const id = Number((await params).id);
   const playlist = await prisma.playlist.findFirst({ where: { id } });
 
   if (!playlist) {
